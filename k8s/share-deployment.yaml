@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: share
+  name: share
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: share
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: share
+    spec:
+      containers:
+        - env:
+            - name: JAVA_OPTS
+              value: ' -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80 -Dalfresco.host=localhost -Dalfresco.port=8080 -Dalfresco.context=alfresco -Dalfresco.protocol=http '
+            - name: REPO_HOST
+              value: alfresco
+            - name: REPO_PORT
+              value: "8080"
+          image: alfresco/alfresco-share:7.0.0
+          name: share
+          resources:
+            limits:
+              memory: "1073741824"
+      restartPolicy: Always
+status: {}

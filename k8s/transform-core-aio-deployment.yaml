@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: transform-core-aio
+  name: transform-core-aio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: transform-core-aio
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: transform-core-aio
+    spec:
+      containers:
+        - env:
+            - name: JAVA_OPTS
+              value: ' -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=80'
+          image: alfresco/alfresco-transform-core-aio:2.3.10
+          name: transform-core-aio
+          ports:
+            - containerPort: 8090
+          resources:
+            limits:
+              memory: "1610612736"
+      restartPolicy: Always
+status: {}
